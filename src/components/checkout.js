@@ -45,25 +45,26 @@ const Checkout = (props) => {
     let url = API_ROOTS.API_ROOTSaveOrder;
 
 
-
-
-    
-
     let order = {data:{
       name: inputName,
       address: inputaddress,
       totalprice: total,
-      list: basket$.value
+      list: []
     }}
 
+    for(let i = 0; i < props.location.state.finalArr.length; i++){
+     
+      order.data.list.push({value:props.location.state.finalArr[i]})
+    }
 
+    console.log(order)
     axios.post(url, order, {headers: {"Content-Type": "application/json"}})
  
     .then((response) => {
       
       
 
-      props.updateBasket(basket$.value.length)
+      props.updateLocal(0)
     })
   }
  
@@ -71,7 +72,7 @@ const Checkout = (props) => {
   const renderBasket = (data, index) => {
     
 
-    sum = parseInt(data.value.price) * parseInt(data.value.amount)
+    sum = parseInt(data.price) * parseInt(data.amount)
 
     total = total + sum;
 
@@ -79,9 +80,9 @@ const Checkout = (props) => {
       
       <tbody key={index}>
         <tr>
-          <td>Produkt: {data.value.product}</td>
-          <td>Antal: {data.value.amount}</td>
-          <td>Pris styck: {data.value.price}</td>
+          <td>Produkt: {data.product}</td>
+          <td>Antal: {data.amount}</td>
+          <td>Pris styck: {data.price}</td>
           <td>Pris: {sum}</td>
         </tr>
         
@@ -98,7 +99,7 @@ const Checkout = (props) => {
 <h2 style={{position: 'relative'}}>Checka ut</h2>
 
 <table style={{ fontSize: '16px', paddingLeft: '10px', width: '630px'}}>
-{basket$.value.map(renderBasket)}
+{props.location.state.finalArr.map(renderBasket)}
 </table>
 
 <div style={{position: 'relative', marginTop: '30px', marginLeft: '10px' }}> Summa att betala för varukorgen: <label style={{fontSize: '24px', fontWeight: "bold", left: '80px', position: 'relative'}}>{total} Kr</label></div>
@@ -111,7 +112,7 @@ const Checkout = (props) => {
 
 <input type='text' onChange={whereFn} placeholder='Adress' style={{width: '500px', height: '30px', fontSize: '16px', marginTop: '20px', padding: '10px'}}></input><br></br>
 
-<Link to='/done'><button onClick={sendToOrder} style={{width: '500px', height: '50px', marginTop: '20px', fontSize: '24px', backgroundColor: 'rgb(76, 108, 252)', color: 'white', border: 'none'}} id='handlaKlart'>Lägg beställning</button></Link>
+<Link to='/done'><button onClick={sendToOrder} style={{width: '500px', height: '50px', marginTop: '20px', fontSize: '24px', backgroundColor: 'rgb(76, 108, 252)', color: 'white', border: 'none', cursor: 'pointer'}} id='handlaKlart'>Lägg beställning</button></Link>
 </div>
 </div>
 
@@ -121,3 +122,4 @@ const Checkout = (props) => {
 }
 
 export default Checkout;
+

@@ -24,11 +24,7 @@ const searchField = {
   fontSize: '14px',
   outline: 'none',
 }
-/* const checkBoxInput = {
-  position: 'absolute',
-  left: '500px',
-  top: '20px'
-} */
+
 const checkBoxLabel = {
   position: 'absolute',
   width: '200px',

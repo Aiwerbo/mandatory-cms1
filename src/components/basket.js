@@ -4,26 +4,6 @@ import '../style/style.css';
 import {basket$, updateBasket} from '../components/store.js';
 import '../style/style.css';
 
-const sumObj = (objArr) => {
-
-  /* let counts = objArr.reduce((prev, curr) => {
-
-    let count = prev.get(curr.value.product) || 0;
-    prev.set(curr.value.product, parseInt(curr.value.amount) + count);
-    
-    return prev;
-  }, new Map());
-  
-  let reducedObjArr = [...counts].map(([product, amount, price]) => {
-    return {product, amount, price}
-  })
-  
-  console.log(reducedObjArr); 
- */
-  
-
-}
-
 const topHeader = {
 
   backgroundColor: 'rgb(76, 108, 252)',
@@ -52,7 +32,7 @@ const Basket = (props) => {
   const emptyBasket = () => {
   
     updateBasket([]);
-    props.updateBasket(basket$.value.length)
+    props.updateLocal(0)
 } 
 
 
@@ -101,12 +81,12 @@ let finalArr = [];
     finalArr.push(finalObj = {...obj2[i], ...obj3[i]})
 
   }
-
+  console.log(finalArr)
   const renderBasket = (data, index) => {
 
     console.log(data)
    
-    sum = parseInt(data.value.price) * parseInt(data.value.amount)
+    sum = parseInt(data.price) * parseInt(data.amount)
     
     total = total + sum;
 
@@ -116,13 +96,13 @@ let finalArr = [];
       
       <tbody key={index}>
         <tr>
-          <th style={{position: 'relative', textAlign: 'left'}}>{data.value.product}</th>
+          <th style={{position: 'relative', textAlign: 'left'}}>{data.product}</th>
         </tr>  
         <tr>
-          <td>Antal: {data.value.amount}</td>
+          <td>Antal: {data.amount}</td>
         </tr>
         <tr>
-        <td style={{paddingBottom: '20px'}}>Pris styck: {data.value.price}</td>
+        <td style={{paddingBottom: '20px'}}>Pris styck: {data.price}</td>
           <td>Summa: {sum}</td>
         </tr>
           
@@ -149,11 +129,11 @@ let finalArr = [];
       <h2 style={{position: 'relative'}}>Varukorg</h2>
       <Link to='/basket'><button style={{width: '150px', height: '50px', marginTop: '20px', fontSize: '16px', backgroundColor: 'rgb(76, 108, 252)', marginBottom: '40px', color: 'white', border: 'none', cursor: 'pointer', outline: 'none'}} onClick={emptyBasket}>Töm inköpslista</button></Link>
       <table style={{ fontSize: '16px', paddingLeft: '10px', width: '630px'}}>
-      {basket$.value.map(renderBasket)}
+      {finalArr.map(renderBasket)}
       </table>
       
       <div style={{position: 'relative', marginTop: '30px', marginLeft: '10px' }}> Summa att betala för varukorgen: <label style={{fontSize: '24px', fontWeight: "bold", left: '180px', position: 'relative'}}>{total} Kr</label></div>
-      <Link to='/checkout'><button style={{width: '500px', height: '50px', marginTop: '20px', fontSize: '24px', backgroundColor: 'rgb(76, 108, 252)', color: 'white', border: 'none', cursor: 'pointer', outline: 'none'}} id='handlaKlart'>Gå vidare</button></Link>
+      <Link to={{pathname: '/checkout', state: {finalArr: finalArr}}}><button style={{width: '500px', height: '50px', marginTop: '20px', fontSize: '24px', backgroundColor: 'rgb(76, 108, 252)', color: 'white', border: 'none', cursor: 'pointer', outline: 'none'}} id='handlaKlart'>Gå vidare till betalning</button></Link>
       </div>
       
     </>
@@ -161,3 +141,4 @@ let finalArr = [];
 }
 
 export default Basket 
+

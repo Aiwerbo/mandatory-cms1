@@ -31,18 +31,30 @@ const home = {
 
 function App() {
 
-  const [basket, setBasket] = useState(basket$.value.length);
+  const [basket, setBasket] = useState('');
+  const [local, setLocal] = useState(localStorage.getItem('money') || '')
+
+  useEffect(() => {
+    localStorage.setItem('money', local)
+  }, [local])
+  
+    const updateLocal = (data) => {
+      console.log(data)
+      setLocal(data)
+    }
+
 
    const updateBasketFn = (data) => {
+    
     setBasket(data)
   }
 
-
+  console.log(basket$.value)
 
   return (
     <Router>
       <div className="App">
-      <Link to='/basket' style={checkout}>{basket} - Gå till varukorg</Link>
+      <Link to='/basket' style={checkout}>{local}Kr - Gå till varukorg</Link>
       <div style={{position: 'absolute', left: '-20px'}}>
 
       </div>
@@ -50,10 +62,10 @@ function App() {
         <div>
 
       <Route exact path='/' component={Home}></Route>
-      <Route path='/product/:id' render={(props) => <Product {...props} updateBasket={updateBasketFn}/>} />
+      <Route path='/product/:id' render={(props) => <Product {...props} updateLocal={updateLocal}  updateBasket={updateBasketFn}/>} />
       <Route path='/review' component={Review}></Route>
-      <Route path='/basket' render={(props) => <Basket {...props} updateBasket={updateBasketFn}/>} />
-      <Route path='/checkout' render={(props) => <Checkout {...props} updateBasket={updateBasketFn} /> } />
+      <Route path='/basket' render={(props) => <Basket {...props} updateLocal={updateLocal} updateBasket={updateBasketFn}/>} />
+      <Route path='/checkout' render={(props) => <Checkout {...props} updateLocal={updateLocal}  updateBasket={updateBasketFn} /> } />
       <Route path='/done' component={Done}></Route>
         
         

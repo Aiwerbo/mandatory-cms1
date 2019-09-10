@@ -39,10 +39,10 @@ const Product = (props) => {
   const [apiData, setApiData] = useState([])
   const [reviewData, setReviewData] = useState([]);
   const [reviewDataLink, setReviewDataLink] = useState({});
-  const [amount, setAmount] = useState(1)
+  const [amount, setAmount] = useState(1);
   const id = props.match.params.id;
 
-
+  
 
   useEffect(() => {
 
@@ -102,7 +102,15 @@ const Product = (props) => {
       }
 
       updateBasket([...basket$.value, basket])
-      props.updateBasket(basket$.value.length)
+
+      let money = 0;
+
+      for(let i = 0; i < basket$.value.length; i++){
+        money = money + parseInt(basket$.value[i].value.price) * parseInt(basket$.value[i].value.amount)
+      }
+      console.log(props)
+      props.updateLocal(money)
+   
 
       
     }
