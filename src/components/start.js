@@ -3,8 +3,6 @@ import {BrowserRouter as Router, Route, Link, Redirect}from "react-router-dom";
 
 const Start = () => {
 
-  
-
   return(
     <Redirect to='/page/0' />
   )

@@ -51,19 +51,14 @@ if (newObj[x.value.product]) {
 }
 });
 
-
-
 objPrice.forEach(function(x) {
  
     newObj2[x.value.product] = parseInt(x.value.price);
   
   });
 
-
-
 let obj2 = [];
 let obj3 = []
-
 
 for (let x in newObj) {
 
