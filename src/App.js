@@ -32,7 +32,7 @@ const home = {
 function App() {
 
   const [basket, setBasket] = useState('');
-  const [local, setLocal] = useState(localStorage.getItem('money') || '')
+  const [local, setLocal] = useState(localStorage.getItem('money') || 0)
 
   useEffect(() => {
     localStorage.setItem('money', local)
@@ -54,7 +54,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-      <Link to='/basket' style={checkout}>{local}Kr - Gå till varukorg</Link>
+      <Link to='/basket' style={checkout}>{local} Kr - Gå till varukorg</Link>
       <div style={{position: 'absolute', left: '-20px'}}>
 
       </div>
