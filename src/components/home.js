@@ -36,29 +36,35 @@ let total = 0;
 
 
 
-const Home = () => {
+const Home = (props) => {
 
   const [apiData, setApiData] = useState([]);
   const [inStock, setInStock] = useState(false)
   const [skip, updateSkip] = useState(0)
   const [limit, updateLimit] = useState(6)
   const [search, setSearch] = useState('');
+  
 
-  let pagination = "&limit=" + limit + "&skip=" + skip
+  let next = parseInt(props.match.params.page) + 1
+  let prev = parseInt(props.match.params.page) -1;
+  let page = parseInt(props.match.params.page) * 6;
+
+  let pagination = "&limit=" + limit + "&skip=" + page
   
   useEffect(() => {
 
-    let url = API_ROOTS.API_ROOTProducts + pagination;
+    let url = API_ROOTS.API_ROOTProducts;
     
     if(inStock === true){
       url += '&filter[instock]=true'
     }
     if(search !== ''){
-      url += '&filter[name][$regex]=' + search
+      pagination = '';
+      url += '&filter[name][$regex]=' + search;
     }
     
 
-    axios.get(url, {headers: {"Content-Type": "application/json"}})
+    axios.get(url + pagination, {headers: {"Content-Type": "application/json"}})
  
     .then((response) => {
     
@@ -67,11 +73,12 @@ const Home = () => {
       
     })
 
-  }, [inStock, skip, search]);
+  }, [inStock, skip, search, page]);
 
   
 
   const showInStock = () => {
+
     setInStock(inStock === false ? true : false)
   }
 
@@ -98,16 +105,17 @@ const Home = () => {
     )
   }
   const pagLeftFn = () => {
-    updateSkip(skip - 6);
+   // updateSkip(skip - 6);
   
   }
 
   const pagRightFn = () => {
-    updateSkip(skip + 6);
+   // updateSkip(skip + 6);
 
   }
 
   const searchFn = (e) => {
+    props.history.push("/page/0")
     setSearch(e.target.value)
   }
 
@@ -115,7 +123,7 @@ const Home = () => {
   let rightArrow = '';
 
 
-  if(skip === 0){
+  if(page === 0){
     let hideLeftArrow = 
     <div className="arrows" style={{pointerEvents: 'none'}} onClick={pagLeftFn}>
       <button style={{opacity: '0.2'}} className="arrowButton arrowButton1">Previous page</button>
@@ -127,11 +135,11 @@ const Home = () => {
   else{
     leftArrow = 
     <div className="arrows" onClick={pagLeftFn}>
-        <button className="arrowButton arrowButton1">Prev page</button>
+        <Link to={'/page/' + prev}><button className="arrowButton arrowButton1">Prev page</button></Link>
     </div>
     
   }
-  if(total -1 - skip < 6){
+  if(total -1 - page < 6 || search.length > 0){
     let hideRightArrow = 
 
     <div className="arrows" style={{pointerEvents: 'none'}} onClick={pagRightFn}><button style={{opacity: '0.2'}} className="arrowButton arrowButton2">Next page</button></div>
@@ -143,7 +151,7 @@ const Home = () => {
     rightArrow = 
     
     <div className="arrows" onClick={pagRightFn}>
-      <button className="arrowButton arrowButton2">Next page</button>
+      <Link to={'/page/' + next}><button className="arrowButton arrowButton2">Next page</button></Link>
     </div>
     
     
@@ -152,7 +160,7 @@ const Home = () => {
 
   return(
     <>
-    <Menu searchFn={searchFn} showInStock={showInStock}></Menu>
+    <Menu history={props.history} searchFn={searchFn} showInStock={showInStock}></Menu>
     <Link to='/basket' >Check out</Link>
     <div style={whiteBack}>
     

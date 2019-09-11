@@ -1,4 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
+import {BrowserRouter as Router, Route, Link}from "react-router-dom";
 import '../style/checkbox.css'
 
 const topHeader = {
@@ -37,13 +38,20 @@ const checkBoxLabel = {
 
 
 const Menu = (props) => {
+
+
+  const pushHistory = () => {
+    props.showInStock();
+    props.history.push("/page/0")
+  }
+
   return(
     <>
     <div style={topHeader}>
     <input style={searchField} placeholder="Sök smör"type="text" onChange={props.searchFn}></input>
 
     <label style={checkBoxLabel} className="mds-checkbox">Visa endast smör i lager 
-				<input type="checkbox" className="mds-checkbox__input" onClick={props.showInStock}></input>
+				<input type="checkbox" className="mds-checkbox__input" onClick={pushHistory}></input>
 				<span className="mds-checkbox__span"></span>
 		</label>
 

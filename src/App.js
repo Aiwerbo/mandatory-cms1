@@ -8,7 +8,7 @@ import Review from './components/review'
 import Basket from './components/basket';
 import Checkout from './components/checkout';
 import Done from './components/done';
-import skog from './sol.jpg'
+import Start from './components/start'
 
 const checkout = {
   position: 'fixed',
@@ -61,7 +61,8 @@ function App() {
       <Link to='/' style={home}>Home</Link>
         <div>
 
-      <Route exact path='/' component={Home}></Route>
+      <Route exact path='/' component={Start}></Route>
+      <Route path='/page/:page' component={Home}></Route>
       <Route path='/product/:id' render={(props) => <Product {...props} updateLocal={updateLocal}  updateBasket={updateBasketFn}/>} />
       <Route path='/review' component={Review}></Route>
       <Route path='/basket' render={(props) => <Basket {...props} updateLocal={updateLocal} updateBasket={updateBasketFn}/>} />
